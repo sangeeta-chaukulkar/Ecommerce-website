@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Commerce website</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div id="EcommerceContainer">
         <header>
             <ul class='header'>
-                <li><a href="index.html">HOME</a></li>
+                <li><a href="home.html">HOME</a></li>
                 <li><a href="#">STORE</a></li> 
-                <li><a href="#">ABOUT</a></li>
-                <a href="#" class="cart">cart</a>
+                <li><a href="about.html">ABOUT</a></li>
+                <a href="#cart" class="cart-holder">cart<span class='cart-number'>0</span></a>
             </ul> 
-            <h1>The Generics</h1> 
+            <h1>The Products</h1> 
         </header>
         <section id="products" class="container">
             <h2>Kitchen & Home Appliances</h2>
@@ -26,7 +27,7 @@
                         <img class="prod-images" src="./img/borosil kettle.jpg" alt="">
                     </div>
                     <div class="prod-details">
-                        <span>Rs.1299</span>
+                        <p>Rs.<span>1299</span></p>
                         <button class="shop-item-button" type='button'>ADD TO CART</button>
                     </div>
                 </div>
@@ -36,7 +37,7 @@
                         <img class="prod-images" src="./img/tea kettle.jpg" alt="">
                     </div>
                     <div class="prod-details">
-                        <span>Rs.700</span>
+                        <p>Rs.<span>700</span></p>
                         <button class="shop-item-button" type='button'>ADD TO CART</button>
                     </div>
                 </div>
@@ -45,8 +46,8 @@
                     <div class="image-container">
                         <img class="prod-images" src="./img/water purifier.jpg" alt="">
                     </div>
-                                    <div class="prod-details">
-                        <span>Rs.14000</span>
+                    <div class="prod-details">
+                        <p>Rs.<span>14000</span></p>
                         <button class="shop-item-button" type='button'>ADD TO CART</button>
                     </div>
                 </div>
@@ -55,8 +56,8 @@
                     <div class="image-container">
                         <img class="prod-images" src="./img/wall clock.jpg" alt="">
                     </div>
-                                    <div class="prod-details">
-                        <span>Rs.500</span>
+                    <div class="prod-details">
+                        <p>Rs.<span>500</span></p>
                         <button class="shop-item-button" type='button'>ADD TO CART</button>
                     </div>
                 </div>
@@ -71,8 +72,8 @@
                     <div class="image-container">
                         <img class="prod-images" src="./img/ladies top.jpg" alt="">
                     </div>
-                                <div class="prod-details">
-                        <span>Rs.600</span>
+                    <div class="prod-details">
+                        <p>Rs.<span>600</span></p>
                         <button class="shop-item-button" type='button'>ADD TO CART</button>
                     </div>
                 </div>
@@ -81,8 +82,8 @@
                     <div class="image-container">
                         <img class="prod-images" src="./img/coffee mug.jpg" alt="">
                     </div>
-                                <div class="prod-details">
-                        <span>Rs.99</span>
+                    <div class="prod-details">
+                        <p>Rs.<span>99</span></p>
                         <button class="shop-item-button" type='button'>ADD TO CART</button>
                     </div>
                 </div>
@@ -109,13 +110,13 @@
             <button class='purchase-btn' type='button'>PURCHASE</button>
         </section>
 
-        <button class="cart-btn-bottom"> <a href="#" class="cart-bottom">See the cart</a></button>
+        <button class="cart-btn-bottom"> <a href="#cart" class="cart-bottom">See the cart</a></button>
     </div>
 
     <div id="container"></div>
     <footer>
         <div class="footer-title">
-            The Generics
+            The Products
         </div>
         <div class="footer-icons">
             <ul>
