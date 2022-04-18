@@ -33,6 +33,7 @@ function addToCart(e){
     </span>`
         cart_items.appendChild(cart_item)
 
+
         const container = document.getElementById('container');
         const notification = document.createElement('div');
         notification.classList.add('notification');
