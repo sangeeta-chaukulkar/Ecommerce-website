@@ -68,3 +68,30 @@ function addToCart(e){
         e.target.parentNode.parentNode.remove()
     }
 }
+window.addEventListener('DOMContentLoaded',()=>{
+    axios.get('http://localhost:3000/admin/products')
+    .then(products => {
+      console.log(products);
+      const productNode=document.getElementById('products-content');
+      productNode.innerHTML="";
+      data = JSON.parse(JSON.stringify(products));
+      console.log(data);
+      data.data.products.forEach(product=>{
+        const childele=document.createElement('div');
+        childele.innerHTML=`<h2>${product.title}</h3>
+        <div class="image-container"> 
+            <img class="prod-images" src="${product.imageUrl}" alt="">
+        </div>
+        <div class="prod-details">
+            <p>Rs.<span>${product.price}</span></p>
+            <button class="shop-item-button" type='button'>ADD TO CART</button>
+        </div>`;
+        productNode.appendChild(childele);
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+})
+
