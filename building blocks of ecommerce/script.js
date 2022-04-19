@@ -5,9 +5,9 @@ parentContainer.addEventListener('click',addToCart);
 
 function addToCart(e){
     if (e.target.className=='shop-item-button'){
-        const id = e.target.parentNode.parentNode.id
+        const id = e.target.parentNode.parentNode.id;
         const name = document.querySelector(`#${id} h3`).innerText;
-        const img_src = document.querySelector(`#${id} img`).src;
+        const img_src = document.querySelector(`$${id} img`).src;
         const price = e.target.parentNode.firstElementChild.firstElementChild.innerText;
         let total_cart_price = document.querySelector('#total-value').innerText;
         if (document.querySelector(`#in-cart-${id}`)){
@@ -32,7 +32,6 @@ function addToCart(e){
         <button>REMOVE</button>
     </span>`
         cart_items.appendChild(cart_item)
-
 
         const container = document.getElementById('container');
         const notification = document.createElement('div');
@@ -78,17 +77,50 @@ window.addEventListener('DOMContentLoaded',()=>{
       console.log(data);
       data.data.products.forEach(product=>{
         const childele=document.createElement('div');
-        childele.innerHTML=`<h2>${product.title}</h3>
+        childele.setAttribute("id", `${product.id}`);
+       
+        childele.innerHTML=`<h3>${product.title}</h3>
         <div class="image-container"> 
             <img class="prod-images" src="${product.imageUrl}" alt="">
         </div>
         <div class="prod-details">
             <p>Rs.<span>${product.price}</span></p>
-            <button class="shop-item-button" type='button'>ADD TO CART</button>
+            <button class="shop-item-button" type='submit'>ADD TO CART</button>
         </div>`;
         productNode.appendChild(childele);
       })
     })
+    .then(
+        axios.get('http://localhost:3000/cart')
+        .then(products => {
+        data = JSON.parse(JSON.stringify(products));
+        console.log(data);
+        total_cart_price=0;
+        data.data.products.forEach(product=>{
+        document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)+1
+        const cart_item = document.createElement('div');
+        cart_item.classList.add('cart-row');
+        cart_item.setAttribute('id',`in-cart-${product.id}`);
+        const price=`${product.price}`;
+        const quantity=`${product.cartItem.quantity}`;
+        console.log(price*quantity);
+        total_cart_price = parseFloat(total_cart_price) + parseFloat(price*quantity);
+        total_cart_price = total_cart_price.toFixed(2);
+        document.querySelector('#total-value').innerText = `${total_cart_price}`;
+        cart_item.innerHTML = `
+        <span class='cart-item cart-column'>
+        <img class='cart-img' src="${product.imageUrl}" alt="">
+            <span>${product.title}</span>
+        </span>
+        <span class='cart-price cart-column'>${product.price}</span>
+        <span class='cart-quantity cart-column'>
+            <input type="text" value=${product.cartItem.quantity}>
+            <button>REMOVE</button>
+        </span>`
+        cart_items.appendChild(cart_item);
+        });
+        })
+    )
     .catch(err => {
       console.log(err);
     });
