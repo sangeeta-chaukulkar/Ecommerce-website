@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Orders history</title>
+    
+</head>
+<body>
+    <div id="EcommerceContainer">
+    <h2 id="ordersHist">Orders placed</h2>
+    <div id="orders-placed">
+
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
+    <script type="text/javascript" >
+    axios.get(`http://localhost:3000/orders`)
+        .then(orders=>{
+            data = JSON.parse(JSON.stringify(orders));
+            console.log(data);
+            data.data.forEach(order=>{
+            const container = document.getElementById('orders-placed');
+            const orderDiv = document.createElement('div');
+            orderDiv.innerHTML = `<li>Order ID: ${order.id}</li>
+            <li>User ID: ${order.userId}</li>
+            <li>User ID: ${order.createdAt}</li>`
+            order.products.forEach(data => {
+                orderDiv.innerHTML +=`<li>Item Price: ${data.price}</li>
+            <li>Item name: ${data.title}</li>`
+            })
+            container.appendChild(orderDiv);
+        })
+    })
+    .catch(err => {
+        console.log(err);
+    });
+</script>
+
+</body>
+</html>

@@ -50,6 +50,11 @@ function addToCart(e){
     if (e.target.className=='cancel'){
         document.querySelector('#cart').style = "display:none;"
     }
+    if (e.target.className=='order-btn-bottom'){
+        document.querySelector('#cart').style = "display:none;"
+    }
+
+
     if (e.target.className=='order-btn'){
         if (parseInt(document.querySelector('.cart-number').innerText) === 0){
             alert('You have Nothing in Cart , Add some products to order !');
