@@ -50,13 +50,38 @@ function addToCart(e){
     if (e.target.className=='cancel'){
         document.querySelector('#cart').style = "display:none;"
     }
-    if (e.target.className=='purchase-btn'){
+    if (e.target.className=='order-btn'){
         if (parseInt(document.querySelector('.cart-number').innerText) === 0){
-            alert('You have Nothing in Cart , Add some products to purchase !');
-            return
+            alert('You have Nothing in Cart , Add some products to order !');
+            return 
         }
+        axios.get(`http://localhost:3000/carts`).then(cartData=>{
+            data = JSON.parse(JSON.stringify(cartData));
+            console.log("carts",data)
+            axios.post(`http://localhost:3000/create-order`,data)
+            .then(result=>{
+                data1 = JSON.parse(JSON.stringify(result));
+                console.log("ordercarts",data1)
+                const container = document.getElementById('container');
+                const notification = document.createElement('div');
+                notification.classList.add('notification');
+                notification.innerHTML = `<h4>Order sucessfully placed with order id = : <span>${data1.data}</span><h4>`;
+                container.appendChild(notification);
+                setTimeout(()=>{
+                    notification.remove();
+                },2500)
+                return (`{ ${data1.data} , sucess : true }`);
+            })
+        }         
+        )
+        .catch(err => {
+            console.log(err);
+        });
+        
         alert('Thanks for the purchase')
         cart_items.innerHTML = ""
+        const parentNodeCart=document.getElementById('cartPagination');
+        parentNodeCart.innerHTML="";
         document.querySelector('.cart-number').innerText = 0
         document.querySelector('#total-value').innerText = `0`;
     }

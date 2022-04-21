@@ -248,7 +248,7 @@ section h2{
     font-size:1.5rem;
 }
 
-.purchase-btn{
+.order-btn{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -263,7 +263,7 @@ section h2{
     padding:12px;
     cursor: pointer;
 }
-.purchase-btn:hover{
+.order-btn:hover{
     background-color:#18acdd;
 }
 footer{
