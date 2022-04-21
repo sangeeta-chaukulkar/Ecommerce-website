@@ -1,8 +1,10 @@
+
 const cart_items = document.querySelector('#cart .cart-items');
 
 const parentContainer = document.getElementById('EcommerceContainer');
 parentContainer.addEventListener('click',addToCart);
-
+pagination(1);
+cartPagination(1);
 function addToCart(e){
     if (e.target.className=='shop-item-button'){
         const id = e.target.parentNode.parentNode.id;
@@ -68,62 +70,185 @@ function addToCart(e){
     }
 }
 window.addEventListener('DOMContentLoaded',()=>{
-    axios.get('http://localhost:3000/admin/products')
-    .then(products => {
-      console.log(products);
-      const productNode=document.getElementById('products-content');
-      productNode.innerHTML="";
-      data = JSON.parse(JSON.stringify(products));
-      console.log(data);
-      data.data.products.forEach(product=>{
-        const childele=document.createElement('div');
-        childele.setAttribute("id", `${product.id}`);
+    // axios.get('http://localhost:3000/admin/products')
+    // axios.get(`http://localhost:3000/?page=1`)
+    // .then(products => {
+    // //   console.log(products);
+    //   const productNode=document.getElementById('products-content');
+    //   productNode.innerHTML="";
+    //   data = JSON.parse(JSON.stringify(products));
+    //   console.log("hi",data);
+    //   data.data.prods.forEach(product=>{
+    //     const childele=document.createElement('div');
+    //     childele.setAttribute("id", `${product.id}`);
        
-        childele.innerHTML=`<h3>${product.title}</h3>
-        <div class="image-container"> 
-            <img class="prod-images" src="${product.imageUrl}" alt="">
-        </div>
-        <div class="prod-details">
-            <p>Rs.<span>${product.price}</span></p>
-            <button class="shop-item-button" type='submit'>ADD TO CART</button>
-        </div>`;
-        productNode.appendChild(childele);
-      })
-    })
-    .then(
-        axios.get('http://localhost:3000/cart')
+    //     childele.innerHTML=`<h3>${product.title}</h3>
+    //     <div class="image-container"> 
+    //         <img class="prod-images" src="${product.imageUrl}" alt="">
+    //     </div>
+    //     <div class="prod-details">
+    //         <p>Rs.<span>${product.price}</span></p>
+    //         <button class="shop-item-button" type='submit'>ADD TO CART</button>
+    //     </div>`;
+    //     productNode.appendChild(childele);
+    //   })
+    // })
+    // .then(
+        axios.get('http://localhost:3000/')
         .then(products => {
+        const parentNode=document.getElementById('pagination');
+        parentNode.innerHTML="";
         data = JSON.parse(JSON.stringify(products));
-        console.log(data);
+        data=data.data;
+        if (data.currentPage != 1){
+            const a = document.createElement('button');
+            a.innerHTML = "1"; 
+            a.onclick= () => {
+                pagination(a.innerHTML);
+            };
+            parentNode.appendChild(a);
+        }
+        const a1 = document.createElement('button');
+        a1.innerHTML = `${data.currentPage}`; 
+        a1.onclick= () => {
+            pagination(a1.innerHTML);
+        };
+        // a1.setAttribute('class','active');
+        parentNode.appendChild(a1);
+        if (data.hasPreviousPage){
+            const a2 = document.createElement('button');
+            a2.innerHTML = `${data.previousPage}`; 
+            a2.onclick= () => {
+                pagination(a2.innerHTML);
+            };
+            parentNode.appendChild(a2);
+        }
+        if (data.hasNextPage){
+            const a3 = document.createElement('button');
+            a3.innerHTML = `${data.nextPage}`; 
+            a3.onclick= () => {
+                pagination(a3.innerHTML);
+            };
+            parentNode.appendChild(a3);
+        }
+        if (data.lastPage!==data.currentPage && data.nextPage !== data.lastPage ){
+            const a4 = document.createElement('button');
+            a4.innerHTML = `${data.lastPage}`; 
+            a4.onclick= () => {
+                pagination(a4.innerHTML);
+            };
+            parentNode.appendChild(a4);
+        }
+        })
+        .then(
+            axios.get('http://localhost:3000/cart')
+                .then(products => {
+                const parentNodeCart=document.getElementById('cartPagination');
+                parentNodeCart.innerHTML="";
+                data = JSON.parse(JSON.stringify(products));
+                data=data.data;
+                if (data.currentPage != 1){
+                    const a = document.createElement('button');
+                    a.innerHTML = "1"; 
+                    a.onclick= () => {
+                        cartPagination(a.innerHTML);
+                    };
+                    parentNodeCart.appendChild(a);
+                }
+                const a1 = document.createElement('button');
+                a1.innerHTML = `${data.currentPage}`; 
+                a1.onclick= () => {
+                    cartPagination(a1.innerHTML);
+                };
+                // a1.setAttribute('class','active');
+                parentNodeCart.appendChild(a1);
+                if (data.hasPreviousPage){
+                    const a2 = document.createElement('button');
+                    a2.innerHTML = `${data.previousPage}`; 
+                    a2.onclick= () => {
+                        cartPagination(a2.innerHTML);
+                    };
+                    parentNodeCart.appendChild(a2);
+                }
+                if (data.hasNextPage){
+                    const a3 = document.createElement('button');
+                    a3.innerHTML = `${data.nextPage}`; 
+                    a3.onclick= () => {
+                        cartPagination(a3.innerHTML);
+                    };
+                    parentNodeCart.appendChild(a3);
+                }
+                if (data.lastPage!==data.currentPage && data.nextPage !== data.lastPage ){
+                    const a4 = document.createElement('button');
+                    a4.innerHTML = `${data.lastPage}`; 
+                    a4.onclick= () => {
+                        cartPagination(a4.innerHTML);
+                    };
+                    parentNodeCart.appendChild(a4);
+                }
+                })
+                )
+            .catch(err => {
+            console.log(err);
+            });
+})
+function pagination(title){
+        axios.get(`http://localhost:3000/?page=${title}`)
+        .then(products => {
+        const productNode=document.getElementById('products-content');
+        productNode.innerHTML="";
+        data = JSON.parse(JSON.stringify(products));
+        data.data.prods.forEach(product=>{
+            const childele=document.createElement('div');
+            childele.setAttribute("id", `${product.id}`);
+
+            childele.innerHTML=`<h3>${product.title}</h3>
+            <div class="image-container"> 
+                <img class="prod-images" src="${product.imageUrl}" alt="">
+            </div>
+            <div class="prod-details">
+                <p>Rs.<span>${product.price}</span></p>
+                <button class="shop-item-button" type='submit'>ADD TO CART</button>
+            </div>`;
+            productNode.appendChild(childele);
+        })
+        })
+}
+function cartPagination(title){
+    axios.get(`http://localhost:3000/cart/?page=${title}`)
+        .then(carts => {
+        data = JSON.parse(JSON.stringify(carts));
         total_cart_price=0;
-        data.data.products.forEach(product=>{
+        cart_items.innerHTML="";
+        data.data.prods.forEach(cart=>{
         document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)+1
         const cart_item = document.createElement('div');
+        cart_item.innerHTML="";
         cart_item.classList.add('cart-row');
-        cart_item.setAttribute('id',`in-cart-${product.id}`);
-        const price=`${product.price}`;
-        const quantity=`${product.cartItem.quantity}`;
-        console.log(price*quantity);
-        total_cart_price = parseFloat(total_cart_price) + parseFloat(price*quantity);
-        total_cart_price = total_cart_price.toFixed(2);
-        document.querySelector('#total-value').innerText = `${total_cart_price}`;
-        cart_item.innerHTML = `
-        <span class='cart-item cart-column'>
-        <img class='cart-img' src="${product.imageUrl}" alt="">
-            <span>${product.title}</span>
-        </span>
-        <span class='cart-price cart-column'>${product.price}</span>
-        <span class='cart-quantity cart-column'>
-            <input type="text" value=${product.cartItem.quantity}>
-            <button>REMOVE</button>
-        </span>`
-        cart_items.appendChild(cart_item);
+        cart_item.setAttribute('id',`in-cart-${cart.productId}`);
+        axios.get(`http://localhost:3000/products/${cart.productId}`)
+        .then(products => {
+            data = JSON.parse(JSON.stringify(products))
+            product=data.data;
+            const price=`${product.price}`;
+            const quantity=`${cart.quantity}`;
+            total_cart_price = parseFloat(total_cart_price) + parseFloat(price*quantity);
+            total_cart_price = total_cart_price.toFixed(2);
+            document.querySelector('#total-value').innerText = `${total_cart_price}`;
+
+            cart_item.innerHTML = `
+            <span class='cart-item cart-column'>
+            <img class='cart-img' src="${product.imageUrl}" alt="">
+                <span>${product.title}</span>
+            </span>
+            <span class='cart-price cart-column'>${product.price}</span>
+            <span class='cart-quantity cart-column'>
+                <input type="text" value=${cart.quantity}>
+                <button>REMOVE</button>
+            </span>`
+            cart_items.appendChild(cart_item);
+        })
         });
         })
-    )
-    .catch(err => {
-      console.log(err);
-    });
-
-})
+}
 

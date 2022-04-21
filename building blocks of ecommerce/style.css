@@ -439,3 +439,23 @@ header ul a{
     border-radius:7px;
     padding:5px;
 }
+.pagination,.cartPagination{
+	margin-top:2rem;
+    text-align:center;
+}
+#pagination button{
+	text-decoration:none;
+	color:rgb(5, 184, 41);;
+	padding: 0.5rem;
+	border:1px solid rgb(10, 132, 173);;
+	margin: 0 1rem;
+    width:50px;
+    text-align: center;
+    justify-content: center;
+}
+#pagination,#cartPagination button:hover,
+#pagination ,#cartPagination button:active,
+#pagination ,#cartPagination button.active{
+	background:rgb(253, 251, 251);;
+	color:rgb(236, 228, 236);;
+}
