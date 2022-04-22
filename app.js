@@ -39,7 +39,9 @@ app.use((req, res, next) => {
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
-
+app.use((req, res)=>{
+    res.sendFile(path.join(__dirname,`building blocks of ecommerce/${req.url}`));
+})
 app.use(errorController.get404);
 
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
