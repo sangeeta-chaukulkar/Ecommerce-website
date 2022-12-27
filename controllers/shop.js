@@ -5,7 +5,7 @@ const CartItem = require('../models/cart-item');
 const ITEMS_PER_PAGE = 2;
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  Product.fetchAll()
     .then(products => {
       res.render('shop/product-list', {
         prods: products,
@@ -38,7 +38,7 @@ exports.getProduct = (req, res, next) => {
   //     });
   //   })
   //   .catch(err => console.log(err));
-  Product.findByPk(prodId)
+  Product.findById(prodId)
     .then(product => {
       res.json(product);
       // res.render('shop/product-detail', {
@@ -56,7 +56,7 @@ exports.getIndex = (req, res, next) => {
   Product.count()
     .then(numProducts => {
       totalItems = numProducts;
-      return Product.findAll({ offset: ((page - 1) * ITEMS_PER_PAGE) , limit: ITEMS_PER_PAGE });
+      return Product.fetchAll({ offset: ((page - 1) * ITEMS_PER_PAGE) , limit: ITEMS_PER_PAGE });
       // Product.count()
       //   .skip((page - 1) * ITEMS_PER_PAGE)
       //   .limit(ITEMS_PER_PAGE);
