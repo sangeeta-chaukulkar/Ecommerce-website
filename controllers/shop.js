@@ -97,59 +97,56 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  const page = +req.query.page || 1;
-  let totalItems;
-  CartItem.count()
-    .then(numCart => {
-      totalItems = numCart;
-      return CartItem.findAll({ offset: ((page - 1) * ITEMS_PER_PAGE) , limit: ITEMS_PER_PAGE });
-    }) 
+  req.user
+    .getCart()
     .then(products => {
-      console.log(products);
+          // res.json({products});
+          res.render('shop/cart', {
+            path: '/cart',
+            pageTitle: 'Your Cart',
+            products: products
+          });
+        })
+    .catch(err => console.log(err));
+    }
+    // .catch(err => console.log(err));
+  // const page = +req.query.page || 1;
+  // let totalItems;
+  // CartItem.count()
+  //   .then(numCart => {
+  //     totalItems = numCart;
+  //     return CartItem.findAll({ offset: ((page - 1) * ITEMS_PER_PAGE) , limit: ITEMS_PER_PAGE });
+  //   }) 
+  //   .then(products => {
+  //     console.log(products);
       
-      res.json({
-        currentPage:page,
-        prods: products,
-        totalProducts: totalItems,
-        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
-        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
-      });
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-  // req.user
-  //   .getCart()
-  //   .then(cart => {
-  //     return cart
-  //       .getProducts()
-  //       .then(products => {
-  //         res.json({products});
-  //         // res.render('shop/cart', {
-  //         //   path: '/cart',
-  //         //   pageTitle: 'Your Cart',
-  //         //   products: products
-  //         // });
-  //       })
-  //       .catch(err => console.log(err));
+  //     res.json({
+  //       currentPage:page,
+  //       prods: products,
+  //       totalProducts: totalItems,
+  //       hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+  //       hasPreviousPage: page > 1,
+  //       nextPage: page + 1,
+  //       previousPage: page - 1,
+  //       lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+  //     });
   //   })
-  //   .catch(err => console.log(err));
-  
-};
+  //   .catch(err => {
+  //     const error = new Error(err);
+  //     error.httpStatusCode = 500;
+  //     return next(error);
+  //   });
+
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
   Product.findById(prodId)
   .then(product => {
-    return req.user.addToCart(product)
+     return req.user.addToCart(product);
   })
   .then(result => {
     console.log(result);
+    res.redirect('/cart')
   })
 
   // if (!req.body.productId){
@@ -193,10 +190,11 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findByPk(prodId, product => {
-    Cart.deleteProduct(prodId, product.price);
+  req.user.deleteItemFromCart(prodId)
+  .then(result => {
     res.redirect('/cart');
-  });
+  })
+  .catch(err => console.log(err))
 };
 
 
