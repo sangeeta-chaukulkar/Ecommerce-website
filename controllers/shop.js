@@ -5,7 +5,7 @@ const CartItem = require('../models/cart-item');
 const ITEMS_PER_PAGE = 2;
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then(products => {
       res.render('shop/product-list', {
         prods: products,
@@ -56,7 +56,7 @@ exports.getIndex = (req, res, next) => {
   Product.count()
     .then(numProducts => {
       totalItems = numProducts;
-      return Product.fetchAll({ offset: ((page - 1) * ITEMS_PER_PAGE) , limit: ITEMS_PER_PAGE });
+      return Product.find({ offset: ((page - 1) * ITEMS_PER_PAGE) , limit: ITEMS_PER_PAGE });
       // Product.count()
       //   .skip((page - 1) * ITEMS_PER_PAGE)
       //   .limit(ITEMS_PER_PAGE);
